@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class PercictenceManager : MonoBehaviour
@@ -8,7 +9,10 @@ public class PercictenceManager : MonoBehaviour
 
     public static PercictenceManager Instance;
     public int bestScore;
-    public string name;
+    public string BestScoreName;
+    public string playerName;
+    public Text BestScoreText;
+    public string input;
 
     private void Awake()
     {
@@ -22,13 +26,19 @@ public class PercictenceManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         LoadScore();
+        updateScore();
 
+    }
+
+    private void Start()
+    {
+        updateScore();
     }
 
     [System.Serializable]
     class SaveData
     {
-        //public string name;
+        public string BestScoreName;
         public int bestScroe;
     }
 
@@ -37,7 +47,7 @@ public class PercictenceManager : MonoBehaviour
     {
         SaveData data = new SaveData();
         data.bestScroe = bestScore;
-        //data.name = name;
+        data.BestScoreName = BestScoreName;
 
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
@@ -54,7 +64,22 @@ public class PercictenceManager : MonoBehaviour
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
             bestScore = data.bestScroe;
-            //data.name = name;
+            BestScoreName = data.BestScoreName;
+        }
+    }
+
+    public void ReadStringInput(string s)
+    {
+        PercictenceManager.Instance.playerName = s;
+        Debug.Log(playerName);
+       // SaveScore();
+    }
+
+    private void updateScore()
+    {
+        if(PercictenceManager.Instance != null)
+        {
+            GameObject.Find("BestScoreText").GetComponent<Text>().text = "Best Score : " + PercictenceManager.Instance.bestScore + " by " + PercictenceManager.Instance.BestScoreName;
         }
     }
     

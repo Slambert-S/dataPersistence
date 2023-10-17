@@ -86,12 +86,13 @@ public class MainManager : MonoBehaviour
         if(PercictenceManager.Instance.bestScore <= m_Points)
         {
             PercictenceManager.Instance.bestScore = m_Points;
+            PercictenceManager.Instance.BestScoreName = PercictenceManager.Instance.playerName;
         }
         PercictenceManager.Instance.SaveScore();
     }
 
     public void showBestScore()
     {
-        BestScore.text = $"Best Score : {PercictenceManager.Instance.bestScore}";
+        BestScore.text = "Best Score : " + PercictenceManager.Instance.bestScore + " by " + PercictenceManager.Instance.BestScoreName; ;
     }
 }
